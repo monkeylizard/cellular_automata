@@ -1,24 +1,45 @@
 body {
-  background-color: #EDEEFF
+  background-color: #689CF7;
 }
 
 #grid_container {
   height: 500px;
   width: 500px;
-  background-color: #1010e8;
-  padding: 20px;
+  background-color: #3434B3;
+  padding: 40px;
+  margin: 0 auto;
+  margin-top: 50px;
 }
 
 #grid_container table {
-  border: 1px solid black;
+  border: 1px solid #B3B3C9;
+  border-collapse: collapse;
   height: 100%;
   width:  100%;
 }
 
 #grid_container table td {
-  border: 1px solid black;
+  border: 1px solid #B3B3C9;
 }
 
 .active {
   background-color: #E8107C
+}
+
+#controls {
+  position: fixed;
+  top: 35px;
+  right: 50px;
+}
+
+#controls button {
+  background-color: #3434B3;
+  color: white;
+  border: none;
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  width: 100px;
+  height: 40px;
+  font-size: 14px;
 }
