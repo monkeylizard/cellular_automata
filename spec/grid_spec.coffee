@@ -56,6 +56,19 @@ describe 'Grid', ->
 
     expect(grid_table.find('.row8#cell4').hasClass('active')).toEqual(false)
 
+  it 'can set a given cell value', ->
+    grid = new Grid(@grid_container, height: 10, width: 10)
+
+    grid_table = @grid_container.children('table')
+
+    grid.set(x: 4, y: 8, true)
+
+    expect(grid_table.find('.row8#cell4').hasClass('active')).toEqual(true)
+
+    grid.toggle(x: 4, y: 8, false)
+
+    expect(grid_table.find('.row8#cell4').hasClass('active')).toEqual(false)
+
   it 'can be made interactive', ->
     grid = new Grid(@grid_container, height: 10, width: 10, interactive: true)
 

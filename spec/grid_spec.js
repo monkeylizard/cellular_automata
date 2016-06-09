@@ -84,6 +84,24 @@
       });
       return expect(grid_table.find('.row8#cell4').hasClass('active')).toEqual(false);
     });
+    it('can set a given cell value', function() {
+      var grid, grid_table;
+      grid = new Grid(this.grid_container, {
+        height: 10,
+        width: 10
+      });
+      grid_table = this.grid_container.children('table');
+      grid.set({
+        x: 4,
+        y: 8
+      }, true);
+      expect(grid_table.find('.row8#cell4').hasClass('active')).toEqual(true);
+      grid.toggle({
+        x: 4,
+        y: 8
+      }, false);
+      return expect(grid_table.find('.row8#cell4').hasClass('active')).toEqual(false);
+    });
     it('can be made interactive', function() {
       var cell, grid, grid_table;
       grid = new Grid(this.grid_container, {
