@@ -13,6 +13,9 @@ class @Grid
   toggle: (coordinates) ->
     @_grid_cell(coordinates).toggleClass('active')
 
+  is_on: (coordinates) ->
+    @_grid_cell(coordinates).hasClass('active')
+
   _add_interactivity: ->
     self = @
     @grid.find('td').click ->

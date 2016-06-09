@@ -23,6 +23,10 @@
       return this._grid_cell(coordinates).toggleClass('active');
     };
 
+    Grid.prototype.is_on = function(coordinates) {
+      return this._grid_cell(coordinates).hasClass('active');
+    };
+
     Grid.prototype._add_interactivity = function() {
       var self;
       self = this;

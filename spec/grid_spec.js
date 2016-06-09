@@ -84,7 +84,7 @@
       });
       return expect(grid_table.find('.row8#cell4').hasClass('active')).toEqual(false);
     });
-    return it('can be made interactive', function() {
+    it('can be made interactive', function() {
       var cell, grid, grid_table;
       grid = new Grid(this.grid_container, {
         height: 10,
@@ -97,6 +97,31 @@
       expect(cell.hasClass('active')).toEqual(true);
       cell.click();
       return expect(cell.hasClass('active')).toEqual(false);
+    });
+    return it('can tell if a given cell is active', function() {
+      var grid, grid_table;
+      grid = new Grid(this.grid_container, {
+        height: 10,
+        width: 10,
+        interactive: true
+      });
+      grid_table = this.grid_container.children('table');
+      grid.turn_on({
+        x: 4,
+        y: 5
+      });
+      expect(grid.is_on({
+        x: 4,
+        y: 5
+      })).toEqual(true);
+      grid.turn_off({
+        x: 4,
+        y: 5
+      });
+      return expect(grid.is_on({
+        x: 4,
+        y: 5
+      })).toEqual(false);
     });
   });
 

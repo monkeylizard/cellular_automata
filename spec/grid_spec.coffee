@@ -70,3 +70,16 @@ describe 'Grid', ->
     cell.click()
 
     expect(cell.hasClass('active')).toEqual(false)
+
+  it 'can tell if a given cell is active', ->
+    grid = new Grid(@grid_container, height: 10, width: 10, interactive: true)
+
+    grid_table = @grid_container.children('table')
+
+    grid.turn_on(x: 4, y: 5)
+
+    expect(grid.is_on(x: 4, y: 5)).toEqual(true)
+
+    grid.turn_off(x: 4, y: 5)
+
+    expect(grid.is_on(x: 4, y: 5)).toEqual(false)
