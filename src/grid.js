@@ -27,6 +27,14 @@
       return this._grid_cell(coordinates).hasClass('active');
     };
 
+    Grid.prototype.set = function(coordinates, value) {
+      if (value) {
+        return this.turn_on(coordinates);
+      } else {
+        return this.turn_off(coordinates);
+      }
+    };
+
     Grid.prototype._add_interactivity = function() {
       var self;
       self = this;

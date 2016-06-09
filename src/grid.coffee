@@ -16,6 +16,9 @@ class @Grid
   is_on: (coordinates) ->
     @_grid_cell(coordinates).hasClass('active')
 
+  set: (coordinates, value) ->
+    if value then @turn_on(coordinates) else @turn_off(coordinates)
+
   _add_interactivity: ->
     self = @
     @grid.find('td').click ->
