@@ -2,9 +2,13 @@
 (function() {
   this.Grid = (function() {
     function Grid(container, arg) {
+      var interactive;
       this.container = container;
-      this.height = arg.height, this.width = arg.width;
+      this.height = arg.height, this.width = arg.width, interactive = arg.interactive;
       this._add_grid_to_container();
+      if (interactive) {
+        this._add_interactivity();
+      }
     }
 
     Grid.prototype.turn_on = function(coordinates) {
@@ -17,6 +21,14 @@
 
     Grid.prototype.toggle = function(coordinates) {
       return this._grid_cell(coordinates).toggleClass('active');
+    };
+
+    Grid.prototype._add_interactivity = function() {
+      var self;
+      self = this;
+      return this.grid.find('td').click(function() {
+        return self.toggle(jQuery(this).data('coordinates'));
+      });
     };
 
     Grid.prototype._grid_cell = function(arg) {
@@ -50,9 +62,14 @@
     };
 
     Grid.prototype._cell = function(row_number, cell_number) {
-      return jQuery('<td/>', {
+      var cell;
+      cell = jQuery('<td/>', {
         "class": "row" + row_number,
         id: "cell" + cell_number
+      });
+      return cell.data('coordinates', {
+        x: cell_number,
+        y: row_number
       });
     };
 

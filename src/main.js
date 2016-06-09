@@ -8,7 +8,8 @@
     jQuery('body').append(grid_container);
     return window.grid = new Grid(grid_container, {
       height: 20,
-      width: 20
+      width: 20,
+      interactive: true
     });
   });
 

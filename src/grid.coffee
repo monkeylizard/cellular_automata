@@ -1,7 +1,8 @@
 class @Grid
 
-  constructor: (@container, { height: @height, width: @width }) ->
+  constructor: (@container, { height: @height, width: @width, interactive: interactive }) ->
     @_add_grid_to_container()
+    @_add_interactivity() if interactive
 
   turn_on: (coordinates) ->
     @_grid_cell(coordinates).addClass('active')
@@ -11,6 +12,11 @@ class @Grid
 
   toggle: (coordinates) ->
     @_grid_cell(coordinates).toggleClass('active')
+
+  _add_interactivity: ->
+    self = @
+    @grid.find('td').click ->
+      self.toggle(jQuery(this).data('coordinates'))
 
   _grid_cell: ({ x: x, y: y }) -> @grid.find(".row#{y}#cell#{x}")
 
@@ -26,4 +32,6 @@ class @Grid
     row = jQuery('<tr/>')
     _.times @width, (cell_number) => row.append @_cell(row_number, cell_number)
 
-  _cell: (row_number, cell_number) -> jQuery('<td/>', class: "row#{row_number}", id: "cell#{cell_number}")
+  _cell: (row_number, cell_number) ->
+    cell = jQuery('<td/>', class: "row#{row_number}", id: "cell#{cell_number}")
+    cell.data('coordinates', x: cell_number, y: row_number)
