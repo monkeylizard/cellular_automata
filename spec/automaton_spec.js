@@ -34,7 +34,7 @@
         y: 0
       });
     });
-    return it('makes all moves simultaneously', function() {
+    it('makes all moves simultaneously', function() {
       var automaton, rule;
       rule = function(x, y, grid) {
         if ((x === y && y === 0)) {
@@ -61,6 +61,73 @@
         x: 1,
         y: 0
       });
+    });
+    it('can make moves at regular intervals', function() {
+      var automaton, rule;
+      jasmine.clock().install();
+      rule = function(x, y, grid) {
+        return !grid.is_on({
+          x: x,
+          y: y
+        });
+      };
+      automaton = new Automaton(this.grid, rule, 1000);
+      spyOn(this.grid, 'turn_on').and.callThrough();
+      spyOn(this.grid, 'turn_off').and.callThrough();
+      automaton.start();
+      jasmine.clock().tick(1000);
+      expect(this.grid.turn_on).toHaveBeenCalledWith({
+        x: 0,
+        y: 0
+      });
+      expect(this.grid.turn_on).toHaveBeenCalledWith({
+        x: 1,
+        y: 0
+      });
+      expect(this.grid.turn_on).toHaveBeenCalledWith({
+        x: 0,
+        y: 1
+      });
+      expect(this.grid.turn_on).toHaveBeenCalledWith({
+        x: 1,
+        y: 1
+      });
+      expect(this.grid.turn_off).not.toHaveBeenCalled();
+      jasmine.clock().tick(1000);
+      expect(this.grid.turn_off).toHaveBeenCalledWith({
+        x: 0,
+        y: 0
+      });
+      expect(this.grid.turn_off).toHaveBeenCalledWith({
+        x: 1,
+        y: 0
+      });
+      expect(this.grid.turn_off).toHaveBeenCalledWith({
+        x: 0,
+        y: 1
+      });
+      expect(this.grid.turn_off).toHaveBeenCalledWith({
+        x: 1,
+        y: 1
+      });
+      return jasmine.clock().uninstall();
+    });
+    return it('can stop once started', function() {
+      var automaton, rule;
+      jasmine.clock().install();
+      rule = function(x, y, grid) {
+        return true;
+      };
+      automaton = new Automaton(this.grid, rule, 1000);
+      spyOn(this.grid, 'turn_on').and.callThrough();
+      automaton.start();
+      jasmine.clock().tick(1000);
+      expect(this.grid.turn_on.calls.count()).toEqual(4);
+      jasmine.clock().tick(1000);
+      expect(this.grid.turn_on.calls.count()).toEqual(8);
+      automaton.stop();
+      jasmine.clock().tick(1000);
+      return expect(this.grid.turn_on.calls.count()).toEqual(8);
     });
   });
 

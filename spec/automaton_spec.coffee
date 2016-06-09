@@ -34,3 +34,57 @@ describe 'Automaton', ->
 
     expect(@grid.turn_on).toHaveBeenCalledWith(x: 0, y: 0)
     expect(@grid.turn_on).toHaveBeenCalledWith(x: 1, y: 0)
+
+  it 'can make moves at regular intervals', ->
+    jasmine.clock().install()
+
+    rule = (x, y, grid) -> !grid.is_on(x: x, y: y)
+
+    automaton = new Automaton(@grid, rule, 1000)
+
+    spyOn(@grid, 'turn_on').and.callThrough()
+    spyOn(@grid, 'turn_off').and.callThrough()
+
+    automaton.start()
+
+    jasmine.clock().tick(1000)
+
+    expect(@grid.turn_on).toHaveBeenCalledWith(x: 0, y: 0)
+    expect(@grid.turn_on).toHaveBeenCalledWith(x: 1, y: 0)
+    expect(@grid.turn_on).toHaveBeenCalledWith(x: 0, y: 1)
+    expect(@grid.turn_on).toHaveBeenCalledWith(x: 1, y: 1)
+
+    expect(@grid.turn_off).not.toHaveBeenCalled()
+
+    jasmine.clock().tick(1000)
+
+    expect(@grid.turn_off).toHaveBeenCalledWith(x: 0, y: 0)
+    expect(@grid.turn_off).toHaveBeenCalledWith(x: 1, y: 0)
+    expect(@grid.turn_off).toHaveBeenCalledWith(x: 0, y: 1)
+    expect(@grid.turn_off).toHaveBeenCalledWith(x: 1, y: 1)
+
+    jasmine.clock().uninstall()
+
+  it 'can stop once started', ->
+    jasmine.clock().install()
+
+    rule = (x, y, grid) -> true
+
+    automaton = new Automaton(@grid, rule, 1000)
+
+    spyOn(@grid, 'turn_on').and.callThrough()
+
+    automaton.start()
+
+    jasmine.clock().tick(1000)
+
+    expect(@grid.turn_on.calls.count()).toEqual(4)
+
+    jasmine.clock().tick(1000)
+
+    expect(@grid.turn_on.calls.count()).toEqual(8)
+
+    automaton.stop()
+    jasmine.clock().tick(1000)
+
+    expect(@grid.turn_on.calls.count()).toEqual(8)
