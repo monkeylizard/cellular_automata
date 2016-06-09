@@ -88,3 +88,14 @@ describe 'Automaton', ->
     jasmine.clock().tick(1000)
 
     expect(@grid.turn_on.calls.count()).toEqual(8)
+
+  it 'can clear the grid', ->
+    rule = (x, y, grid) -> true
+
+    automaton = new Automaton(@grid, rule, 1000)
+
+    automaton.step()
+
+    automaton.clear()
+
+    expect(@grid_container.find('.active').length).toEqual(0)

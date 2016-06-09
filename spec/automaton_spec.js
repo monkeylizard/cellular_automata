@@ -112,7 +112,7 @@
       });
       return jasmine.clock().uninstall();
     });
-    return it('can stop once started', function() {
+    it('can stop once started', function() {
       var automaton, rule;
       jasmine.clock().install();
       rule = function(x, y, grid) {
@@ -128,6 +128,16 @@
       automaton.stop();
       jasmine.clock().tick(1000);
       return expect(this.grid.turn_on.calls.count()).toEqual(8);
+    });
+    return it('can clear the grid', function() {
+      var automaton, rule;
+      rule = function(x, y, grid) {
+        return true;
+      };
+      automaton = new Automaton(this.grid, rule, 1000);
+      automaton.step();
+      automaton.clear();
+      return expect(this.grid_container.find('.active').length).toEqual(0);
     });
   });
 

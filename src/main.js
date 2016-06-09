@@ -7,8 +7,8 @@
     });
     jQuery('body').append(grid_container);
     window.grid = new Grid(grid_container, {
-      height: 20,
-      width: 20,
+      height: 30,
+      width: 30,
       interactive: true
     });
     rule = function(x, y, grid) {
@@ -20,12 +20,15 @@
         y: y - 1
       });
     };
-    automaton = new Automaton(window.grid, rule, 1000);
+    automaton = new Automaton(window.grid, rule, 500);
     jQuery('#start').click(function() {
       return automaton.start();
     });
-    return jQuery('#stop').click(function() {
+    jQuery('#stop').click(function() {
       return automaton.stop();
+    });
+    return jQuery('#clear').click(function() {
+      return automaton.clear();
     });
   });
 

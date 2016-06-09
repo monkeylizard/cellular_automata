@@ -13,7 +13,13 @@ class @Automaton
 
   stop: -> clearInterval(@interval_id)
 
+  clear: ->
+    @_map_cells (row_number, cell_number) => @grid.turn_off(x: cell_number, y: row_number)
+
   _step_instructions: ->
+    @_map_cells (row_number, cell_number) => @rule(cell_number, row_number, @grid)
+
+  _map_cells: (iteratee) ->
     _.map [0...@height], (row_number) =>
       _.map [0...@width], (cell_number) =>
-        @rule(cell_number, row_number, @grid)
+        iteratee(row_number, cell_number)

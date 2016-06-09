@@ -33,7 +33,26 @@
       return clearInterval(this.interval_id);
     };
 
+    Automaton.prototype.clear = function() {
+      return this._map_cells((function(_this) {
+        return function(row_number, cell_number) {
+          return _this.grid.turn_off({
+            x: cell_number,
+            y: row_number
+          });
+        };
+      })(this));
+    };
+
     Automaton.prototype._step_instructions = function() {
+      return this._map_cells((function(_this) {
+        return function(row_number, cell_number) {
+          return _this.rule(cell_number, row_number, _this.grid);
+        };
+      })(this));
+    };
+
+    Automaton.prototype._map_cells = function(iteratee) {
       var i, ref, results;
       return _.map((function() {
         results = [];
@@ -47,7 +66,7 @@
             for (var j = 0, ref1 = _this.width; 0 <= ref1 ? j < ref1 : j > ref1; 0 <= ref1 ? j++ : j--){ results1.push(j); }
             return results1;
           }).apply(this), function(cell_number) {
-            return _this.rule(cell_number, row_number, _this.grid);
+            return iteratee(row_number, cell_number);
           });
         };
       })(this));
