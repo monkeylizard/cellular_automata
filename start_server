@@ -1,3 +1,4 @@
 #!/bin/bash
 
 coffee -c **/*.coffee
+python -m SimpleHTTPServer
