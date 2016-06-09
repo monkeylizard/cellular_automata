@@ -1,3 +1,24 @@
 body {
   background-color: #EDEEFF
 }
+
+#grid_container {
+  height: 500px;
+  width: 500px;
+  background-color: #1010e8;
+  padding: 20px;
+}
+
+#grid_container table {
+  border: 1px solid black;
+  height: 100%;
+  width:  100%;
+}
+
+#grid_container table td {
+  border: 1px solid black;
+}
+
+.active {
+  background-color: #E8107C
+}
