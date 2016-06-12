@@ -59,7 +59,7 @@
     return jQuery("<style>[data-state='" + state + "'] { background-color: " + color + "; }</style>").appendTo('head');
   };
 
-  this.display_rule_switcher = function() {
+  this.display_menu = function() {
     var menu;
     menu = jQuery('<select/>', {
       id: 'menu'
@@ -80,7 +80,7 @@
 
   $((function(_this) {
     return function() {
-      _this.display_rule_switcher();
+      _this.display_menu();
       return _this.load_rule(_this.rules.conways_game_of_life);
     };
   })(this));

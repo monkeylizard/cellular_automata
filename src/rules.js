@@ -118,6 +118,71 @@
         }
         return self;
       }
+    },
+    wire_world: {
+      name: 'Wire World',
+      states: 4,
+      colors: ['inherit', 'black', 'yellow', 'orange'],
+      rule: function(x, y, grid) {
+        var BACKGROUND, HEAD, TAIL, WIRE, east, neighbors, north, northeast, northwest, number_of_active_neighbors, self, south, southeast, southwest, west;
+        BACKGROUND = 0;
+        WIRE = 1;
+        HEAD = 2;
+        TAIL = 3;
+        self = grid.state({
+          x: x,
+          y: y
+        });
+        if (self === BACKGROUND) {
+          return BACKGROUND;
+        }
+        if (self === HEAD) {
+          return TAIL;
+        }
+        if (self === TAIL) {
+          return WIRE;
+        }
+        northwest = grid.state({
+          x: x - 1,
+          y: y - 1
+        });
+        north = grid.state({
+          x: x,
+          y: y - 1
+        });
+        northeast = grid.state({
+          x: x + 1,
+          y: y - 1
+        });
+        west = grid.state({
+          x: x - 1,
+          y: y
+        });
+        east = grid.state({
+          x: x + 1,
+          y: y
+        });
+        southwest = grid.state({
+          x: x - 1,
+          y: y + 1
+        });
+        south = grid.state({
+          x: x,
+          y: y + 1
+        });
+        southeast = grid.state({
+          x: x + 1,
+          y: y + 1
+        });
+        neighbors = [northwest, north, northeast, west, east, southwest, south, southeast];
+        number_of_active_neighbors = _.size(_.filter(neighbors, function(neighbor) {
+          return neighbor === HEAD;
+        }));
+        if (number_of_active_neighbors === 1 || number_of_active_neighbors === 2) {
+          return HEAD;
+        }
+        return WIRE;
+      }
     }
   };
 

@@ -58,3 +58,37 @@
       return FIRESTART if Math.random() < chance_of_catching_fire
       self
 
+  wire_world:
+    name: 'Wire World'
+    states: 4
+    colors: ['inherit', 'black', 'yellow', 'orange']
+    rule: (x, y, grid) ->
+      BACKGROUND = 0
+      WIRE = 1
+      HEAD = 2
+      TAIL = 3
+
+      self = grid.state(x: x, y: y)
+
+      return BACKGROUND if self == BACKGROUND
+      return TAIL if self == HEAD
+      return WIRE if self == TAIL
+
+      northwest = grid.state(x: x - 1,  y: y - 1)
+      north     = grid.state(x: x,      y: y - 1)
+      northeast = grid.state(x: x + 1,  y: y - 1)
+
+      west      = grid.state(x: x - 1,  y: y)
+      east      = grid.state(x: x + 1,  y: y)
+
+      southwest = grid.state(x: x - 1,  y: y + 1)
+      south     = grid.state(x: x,      y: y + 1)
+      southeast = grid.state(x: x + 1,  y: y + 1)
+
+      neighbors = [northwest, north, northeast, west, east, southwest, south, southeast]
+
+      number_of_active_neighbors = _.size(_.filter(neighbors, (neighbor) -> neighbor == HEAD))
+
+      return HEAD if number_of_active_neighbors == 1 || number_of_active_neighbors == 2
+
+      WIRE
