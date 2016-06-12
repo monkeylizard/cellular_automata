@@ -4,7 +4,7 @@ body {
 
 #grid_container {
   height: 500px;
-  width: 500px;
+  width: 800px;
   background-color: #3434B3;
   padding: 40px;
   margin: 0 auto;
@@ -21,19 +21,11 @@ body {
 #grid_container table td {
   border: 1px solid #B3B3C9;
 }
-
-[data-state="1"] {
-  background-color: #E8107C
-}
-
-[data-state="2"] {
-  background-color: white
-}
-
 #controls {
   position: fixed;
   top: 35px;
   right: 50px;
+  width: 100px;
 }
 
 #controls button {

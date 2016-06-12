@@ -125,7 +125,8 @@
       expect(this.grid.set.calls.count()).toEqual(8);
       automaton.stop();
       jasmine.clock().tick(1000);
-      return expect(this.grid.set.calls.count()).toEqual(8);
+      expect(this.grid.set.calls.count()).toEqual(8);
+      return jasmine.clock().uninstall();
     });
     return it('can clear the grid', function() {
       var automaton, rule;
