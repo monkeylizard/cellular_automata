@@ -9,7 +9,8 @@
     return window.grid = new Grid(grid_container, {
       height: 20,
       width: 20,
-      interactive: true
+      interactive: true,
+      states: 3
     });
   });
 

@@ -4,7 +4,8 @@
     function Grid(container, arg) {
       var interactive;
       this.container = container;
-      this.height = arg.height, this.width = arg.width, interactive = arg.interactive;
+      this.height = arg.height, this.width = arg.width, interactive = arg.interactive, this.states = arg.states;
+      this.states || (this.states = 2);
       this._add_grid_to_container();
       if (interactive) {
         this._add_interactivity();
@@ -12,27 +13,27 @@
     }
 
     Grid.prototype.turn_on = function(coordinates) {
-      return this._grid_cell(coordinates).addClass('active');
+      return this.set(coordinates, 1);
     };
 
     Grid.prototype.turn_off = function(coordinates) {
-      return this._grid_cell(coordinates).removeClass('active');
+      return this.set(coordinates, 0);
     };
 
     Grid.prototype.toggle = function(coordinates) {
-      return this._grid_cell(coordinates).toggleClass('active');
+      return this.set(coordinates, (this.state(coordinates) + 1) % this.states);
+    };
+
+    Grid.prototype.state = function(coordinates) {
+      return Number(this._grid_cell(coordinates).attr('data-state'));
     };
 
     Grid.prototype.is_on = function(coordinates) {
-      return this._grid_cell(coordinates).hasClass('active');
+      return this.state(coordinates) > 0;
     };
 
     Grid.prototype.set = function(coordinates, value) {
-      if (value) {
-        return this.turn_on(coordinates);
-      } else {
-        return this.turn_off(coordinates);
-      }
+      return this._grid_cell(coordinates).attr('data-state', value);
     };
 
     Grid.prototype._add_interactivity = function() {
@@ -77,7 +78,8 @@
       var cell;
       cell = jQuery('<td/>', {
         "class": "row" + row_number,
-        id: "cell" + cell_number
+        id: "cell" + cell_number,
+        'data-state': 0
       });
       return cell.data('coordinates', {
         x: cell_number,

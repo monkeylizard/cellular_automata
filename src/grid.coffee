@@ -1,23 +1,24 @@
 class @Grid
 
-  constructor: (@container, { height: @height, width: @width, interactive: interactive }) ->
+  constructor: (@container, { height: @height, width: @width, interactive: interactive, states: @states }) ->
+    @states ||= 2
     @_add_grid_to_container()
     @_add_interactivity() if interactive
 
-  turn_on: (coordinates) ->
-    @_grid_cell(coordinates).addClass('active')
+  turn_on: (coordinates) -> @set(coordinates, 1)
 
-  turn_off: (coordinates) ->
-    @_grid_cell(coordinates).removeClass('active')
+  turn_off: (coordinates) -> @set(coordinates, 0)
 
   toggle: (coordinates) ->
-    @_grid_cell(coordinates).toggleClass('active')
+    @set(coordinates, (@state(coordinates) + 1) % @states)
 
-  is_on: (coordinates) ->
-    @_grid_cell(coordinates).hasClass('active')
+  state: (coordinates) ->
+    Number(@_grid_cell(coordinates).attr('data-state'))
+
+  is_on: (coordinates) -> @state(coordinates) > 0
 
   set: (coordinates, value) ->
-    if value then @turn_on(coordinates) else @turn_off(coordinates)
+    @_grid_cell(coordinates).attr('data-state', value)
 
   _add_interactivity: ->
     self = @
@@ -39,5 +40,5 @@ class @Grid
     _.times @width, (cell_number) => row.append @_cell(row_number, cell_number)
 
   _cell: (row_number, cell_number) ->
-    cell = jQuery('<td/>', class: "row#{row_number}", id: "cell#{cell_number}")
+    cell = jQuery('<td/>', class: "row#{row_number}", id: "cell#{cell_number}", 'data-state': 0)
     cell.data('coordinates', x: cell_number, y: row_number)
