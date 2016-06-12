@@ -29,15 +29,16 @@
           var cell;
           cell = grid_table.find(".row" + row_number + "#cell" + cell_number);
           expect(cell.length).toEqual(1);
-          return expect(cell.data('coordinates')).toEqual({
+          expect(cell.data('coordinates')).toEqual({
             x: cell_number,
             y: row_number
           });
+          return expect(cell.attr('data-state')).toEqual('0');
         });
       });
     });
     it('can turn on a given cell', function() {
-      var grid, grid_table;
+      var cell, grid, grid_table;
       grid = new Grid(this.grid_container, {
         height: 10,
         width: 10
@@ -47,7 +48,8 @@
         x: 7,
         y: 3
       });
-      return expect(grid_table.find('.row3#cell7').hasClass('active')).toEqual(true);
+      cell = grid_table.find('.row3#cell7');
+      return expect(cell.attr('data-state')).toEqual('1');
     });
     it('can turn off a given cell', function() {
       var grid, grid_table;
@@ -64,7 +66,7 @@
         x: 7,
         y: 3
       });
-      return expect(grid_table.find('.row3#cell7').hasClass('active')).toEqual(false);
+      return expect(grid_table.find('.row3#cell7').attr('data-state')).toEqual('0');
     });
     it('can toggle a given cell', function() {
       var grid, grid_table;
@@ -77,12 +79,12 @@
         x: 4,
         y: 8
       });
-      expect(grid_table.find('.row8#cell4').hasClass('active')).toEqual(true);
+      expect(grid_table.find('.row8#cell4').attr('data-state')).toEqual('1');
       grid.toggle({
         x: 4,
         y: 8
       });
-      return expect(grid_table.find('.row8#cell4').hasClass('active')).toEqual(false);
+      return expect(grid_table.find('.row8#cell4').attr('data-state')).toEqual('0');
     });
     it('can set a given cell value', function() {
       var grid, grid_table;
@@ -94,13 +96,13 @@
       grid.set({
         x: 4,
         y: 8
-      }, true);
-      expect(grid_table.find('.row8#cell4').hasClass('active')).toEqual(true);
-      grid.toggle({
+      }, 1);
+      expect(grid_table.find('.row8#cell4').attr('data-state')).toEqual('1');
+      grid.set({
         x: 4,
         y: 8
-      }, false);
-      return expect(grid_table.find('.row8#cell4').hasClass('active')).toEqual(false);
+      }, 0);
+      return expect(grid_table.find('.row8#cell4').attr('data-state')).toEqual('0');
     });
     it('can be made interactive', function() {
       var cell, grid, grid_table;
@@ -112,11 +114,11 @@
       grid_table = this.grid_container.children('table');
       cell = grid_table.find('.row9#cell2');
       cell.click();
-      expect(cell.hasClass('active')).toEqual(true);
+      expect(cell.attr('data-state')).toEqual('1');
       cell.click();
-      return expect(cell.hasClass('active')).toEqual(false);
+      return expect(cell.attr('data-state')).toEqual('0');
     });
-    return it('can tell if a given cell is active', function() {
+    it('can tell if a given cell is active', function() {
       var grid, grid_table;
       grid = new Grid(this.grid_container, {
         height: 10,
@@ -140,6 +142,51 @@
         x: 4,
         y: 5
       })).toEqual(false);
+    });
+    it('can read the state of a given cell', function() {
+      var grid, grid_table;
+      grid = new Grid(this.grid_container, {
+        height: 10,
+        width: 10,
+        interactive: true
+      });
+      grid_table = this.grid_container.children('table');
+      grid.set({
+        x: 4,
+        y: 5
+      }, 1);
+      expect(grid.state({
+        x: 4,
+        y: 5
+      })).toEqual(1);
+      grid.set({
+        x: 4,
+        y: 5
+      }, 0);
+      return expect(grid.state({
+        x: 4,
+        y: 5
+      })).toEqual(0);
+    });
+    return it('can be initialized with a number of possible states and cycle through them', function() {
+      var coordinates, grid, grid_table;
+      grid = new Grid(this.grid_container, {
+        height: 10,
+        width: 10,
+        states: 3
+      });
+      grid_table = this.grid_container.children('table');
+      coordinates = {
+        x: 2,
+        y: 7
+      };
+      expect(grid.state(coordinates)).toEqual(0);
+      grid.toggle(coordinates);
+      expect(grid.state(coordinates)).toEqual(1);
+      grid.toggle(coordinates);
+      expect(grid.state(coordinates)).toEqual(2);
+      grid.toggle(coordinates);
+      return expect(grid.state(coordinates)).toEqual(0);
     });
   });
 

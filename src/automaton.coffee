@@ -7,7 +7,7 @@ class @Automaton
   step: =>
     _.each @_step_instructions(), (row, row_number) =>
       _.each row, (value, cell_number) =>
-        @grid.set(x: cell_number, y: row_number, value)
+        @grid.set(x: cell_number, y: row_number, Number(value))
 
   start: -> @interval_id = setInterval(@step, @step_time)
 

@@ -22,8 +22,12 @@ body {
   border: 1px solid #B3B3C9;
 }
 
-.active {
+[data-state="1"] {
   background-color: #E8107C
+}
+
+[data-state="2"] {
+  background-color: white
 }
 
 #controls {

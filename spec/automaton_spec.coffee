@@ -9,16 +9,15 @@ describe 'Automaton', ->
 
     automaton = new Automaton(@grid, rule)
 
-    spyOn(@grid, 'turn_on')
-    spyOn(@grid, 'turn_off')
+    spyOn(@grid, 'set')
 
     automaton.step()
 
-    expect(@grid.turn_on).toHaveBeenCalledWith(x: 0, y: 0)
-    expect(@grid.turn_on).toHaveBeenCalledWith(x: 1, y: 1)
+    expect(@grid.set).toHaveBeenCalledWith(x: 0, y: 0, 1)
+    expect(@grid.set).toHaveBeenCalledWith(x: 1, y: 1, 1)
 
-    expect(@grid.turn_off).toHaveBeenCalledWith(x: 0, y: 1)
-    expect(@grid.turn_off).toHaveBeenCalledWith(x: 1, y: 0)
+    expect(@grid.set).toHaveBeenCalledWith(x: 0, y: 1, 0)
+    expect(@grid.set).toHaveBeenCalledWith(x: 1, y: 0, 0)
 
   it 'makes all moves simultaneously', ->
     rule = (x, y, grid) ->
@@ -28,12 +27,12 @@ describe 'Automaton', ->
 
     automaton = new Automaton(@grid, rule)
 
-    spyOn(@grid, 'turn_on').and.callThrough()
+    spyOn(@grid, 'set').and.callThrough()
 
     automaton.step()
 
-    expect(@grid.turn_on).toHaveBeenCalledWith(x: 0, y: 0)
-    expect(@grid.turn_on).toHaveBeenCalledWith(x: 1, y: 0)
+    expect(@grid.set).toHaveBeenCalledWith(x: 0, y: 0, 1)
+    expect(@grid.set).toHaveBeenCalledWith(x: 1, y: 0, 1)
 
   it 'can make moves at regular intervals', ->
     jasmine.clock().install()
@@ -42,26 +41,25 @@ describe 'Automaton', ->
 
     automaton = new Automaton(@grid, rule, 1000)
 
-    spyOn(@grid, 'turn_on').and.callThrough()
-    spyOn(@grid, 'turn_off').and.callThrough()
+    spyOn(@grid, 'set').and.callThrough()
 
     automaton.start()
 
     jasmine.clock().tick(1000)
 
-    expect(@grid.turn_on).toHaveBeenCalledWith(x: 0, y: 0)
-    expect(@grid.turn_on).toHaveBeenCalledWith(x: 1, y: 0)
-    expect(@grid.turn_on).toHaveBeenCalledWith(x: 0, y: 1)
-    expect(@grid.turn_on).toHaveBeenCalledWith(x: 1, y: 1)
+    expect(@grid.set).toHaveBeenCalledWith(x: 0, y: 0, 1)
+    expect(@grid.set).toHaveBeenCalledWith(x: 1, y: 0, 1)
+    expect(@grid.set).toHaveBeenCalledWith(x: 0, y: 1, 1)
+    expect(@grid.set).toHaveBeenCalledWith(x: 1, y: 1, 1)
 
-    expect(@grid.turn_off).not.toHaveBeenCalled()
+    expect(@grid.set.calls.count()).toEqual(4)
 
     jasmine.clock().tick(1000)
 
-    expect(@grid.turn_off).toHaveBeenCalledWith(x: 0, y: 0)
-    expect(@grid.turn_off).toHaveBeenCalledWith(x: 1, y: 0)
-    expect(@grid.turn_off).toHaveBeenCalledWith(x: 0, y: 1)
-    expect(@grid.turn_off).toHaveBeenCalledWith(x: 1, y: 1)
+    expect(@grid.set).toHaveBeenCalledWith(x: 0, y: 0, 0)
+    expect(@grid.set).toHaveBeenCalledWith(x: 1, y: 0, 0)
+    expect(@grid.set).toHaveBeenCalledWith(x: 0, y: 1, 0)
+    expect(@grid.set).toHaveBeenCalledWith(x: 1, y: 1, 0)
 
     jasmine.clock().uninstall()
 
@@ -72,22 +70,24 @@ describe 'Automaton', ->
 
     automaton = new Automaton(@grid, rule, 1000)
 
-    spyOn(@grid, 'turn_on').and.callThrough()
+    spyOn(@grid, 'set').and.callThrough()
 
     automaton.start()
 
     jasmine.clock().tick(1000)
 
-    expect(@grid.turn_on.calls.count()).toEqual(4)
+    expect(@grid.set.calls.count()).toEqual(4)
 
     jasmine.clock().tick(1000)
 
-    expect(@grid.turn_on.calls.count()).toEqual(8)
+    expect(@grid.set.calls.count()).toEqual(8)
 
     automaton.stop()
     jasmine.clock().tick(1000)
 
-    expect(@grid.turn_on.calls.count()).toEqual(8)
+    expect(@grid.set.calls.count()).toEqual(8)
+
+    jasmine.clock().uninstall()
 
   it 'can clear the grid', ->
     rule = (x, y, grid) -> true
@@ -98,4 +98,4 @@ describe 'Automaton', ->
 
     automaton.clear()
 
-    expect(@grid_container.find('.active').length).toEqual(0)
+    expect(@grid_container.find('[data-state="1"]').length).toEqual(0)

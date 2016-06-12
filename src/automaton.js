@@ -19,7 +19,7 @@
             return _this.grid.set({
               x: cell_number,
               y: row_number
-            }, value);
+            }, Number(value));
           });
         };
       })(this));

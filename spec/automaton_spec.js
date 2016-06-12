@@ -14,25 +14,24 @@
         return x === y;
       };
       automaton = new Automaton(this.grid, rule);
-      spyOn(this.grid, 'turn_on');
-      spyOn(this.grid, 'turn_off');
+      spyOn(this.grid, 'set');
       automaton.step();
-      expect(this.grid.turn_on).toHaveBeenCalledWith({
+      expect(this.grid.set).toHaveBeenCalledWith({
         x: 0,
         y: 0
-      });
-      expect(this.grid.turn_on).toHaveBeenCalledWith({
+      }, 1);
+      expect(this.grid.set).toHaveBeenCalledWith({
         x: 1,
         y: 1
-      });
-      expect(this.grid.turn_off).toHaveBeenCalledWith({
+      }, 1);
+      expect(this.grid.set).toHaveBeenCalledWith({
         x: 0,
         y: 1
-      });
-      return expect(this.grid.turn_off).toHaveBeenCalledWith({
+      }, 0);
+      return expect(this.grid.set).toHaveBeenCalledWith({
         x: 1,
         y: 0
-      });
+      }, 0);
     });
     it('makes all moves simultaneously', function() {
       var automaton, rule;
@@ -51,16 +50,16 @@
         }
       };
       automaton = new Automaton(this.grid, rule);
-      spyOn(this.grid, 'turn_on').and.callThrough();
+      spyOn(this.grid, 'set').and.callThrough();
       automaton.step();
-      expect(this.grid.turn_on).toHaveBeenCalledWith({
+      expect(this.grid.set).toHaveBeenCalledWith({
         x: 0,
         y: 0
-      });
-      return expect(this.grid.turn_on).toHaveBeenCalledWith({
+      }, 1);
+      return expect(this.grid.set).toHaveBeenCalledWith({
         x: 1,
         y: 0
-      });
+      }, 1);
     });
     it('can make moves at regular intervals', function() {
       var automaton, rule;
@@ -72,44 +71,43 @@
         });
       };
       automaton = new Automaton(this.grid, rule, 1000);
-      spyOn(this.grid, 'turn_on').and.callThrough();
-      spyOn(this.grid, 'turn_off').and.callThrough();
+      spyOn(this.grid, 'set').and.callThrough();
       automaton.start();
       jasmine.clock().tick(1000);
-      expect(this.grid.turn_on).toHaveBeenCalledWith({
+      expect(this.grid.set).toHaveBeenCalledWith({
         x: 0,
         y: 0
-      });
-      expect(this.grid.turn_on).toHaveBeenCalledWith({
+      }, 1);
+      expect(this.grid.set).toHaveBeenCalledWith({
         x: 1,
         y: 0
-      });
-      expect(this.grid.turn_on).toHaveBeenCalledWith({
+      }, 1);
+      expect(this.grid.set).toHaveBeenCalledWith({
         x: 0,
         y: 1
-      });
-      expect(this.grid.turn_on).toHaveBeenCalledWith({
+      }, 1);
+      expect(this.grid.set).toHaveBeenCalledWith({
         x: 1,
         y: 1
-      });
-      expect(this.grid.turn_off).not.toHaveBeenCalled();
+      }, 1);
+      expect(this.grid.set.calls.count()).toEqual(4);
       jasmine.clock().tick(1000);
-      expect(this.grid.turn_off).toHaveBeenCalledWith({
+      expect(this.grid.set).toHaveBeenCalledWith({
         x: 0,
         y: 0
-      });
-      expect(this.grid.turn_off).toHaveBeenCalledWith({
+      }, 0);
+      expect(this.grid.set).toHaveBeenCalledWith({
         x: 1,
         y: 0
-      });
-      expect(this.grid.turn_off).toHaveBeenCalledWith({
+      }, 0);
+      expect(this.grid.set).toHaveBeenCalledWith({
         x: 0,
         y: 1
-      });
-      expect(this.grid.turn_off).toHaveBeenCalledWith({
+      }, 0);
+      expect(this.grid.set).toHaveBeenCalledWith({
         x: 1,
         y: 1
-      });
+      }, 0);
       return jasmine.clock().uninstall();
     });
     it('can stop once started', function() {
@@ -119,15 +117,15 @@
         return true;
       };
       automaton = new Automaton(this.grid, rule, 1000);
-      spyOn(this.grid, 'turn_on').and.callThrough();
+      spyOn(this.grid, 'set').and.callThrough();
       automaton.start();
       jasmine.clock().tick(1000);
-      expect(this.grid.turn_on.calls.count()).toEqual(4);
+      expect(this.grid.set.calls.count()).toEqual(4);
       jasmine.clock().tick(1000);
-      expect(this.grid.turn_on.calls.count()).toEqual(8);
+      expect(this.grid.set.calls.count()).toEqual(8);
       automaton.stop();
       jasmine.clock().tick(1000);
-      return expect(this.grid.turn_on.calls.count()).toEqual(8);
+      return expect(this.grid.set.calls.count()).toEqual(8);
     });
     return it('can clear the grid', function() {
       var automaton, rule;
@@ -137,7 +135,7 @@
       automaton = new Automaton(this.grid, rule, 1000);
       automaton.step();
       automaton.clear();
-      return expect(this.grid_container.find('.active').length).toEqual(0);
+      return expect(this.grid_container.find('[data-state="1"]').length).toEqual(0);
     });
   });
 

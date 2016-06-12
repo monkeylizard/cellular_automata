@@ -1,4 +1,4 @@
 #!/bin/bash
 
-coffee -c **/*.coffee
+./compile
 python -m SimpleHTTPServer
