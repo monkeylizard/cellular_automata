@@ -183,6 +183,36 @@
         }
         return WIRE;
       }
+    },
+    rule_110: {
+      name: 'Rule 110',
+      states: 2,
+      colors: ['inherit', '#E8107C'],
+      rule: function(x, y, grid) {
+        var north, northeast, northwest, outcomes, self, value;
+        self = grid.state({
+          x: x,
+          y: y
+        });
+        if (self) {
+          return 1;
+        }
+        northwest = grid.state({
+          x: x - 1,
+          y: y - 1
+        });
+        north = grid.state({
+          x: x,
+          y: y - 1
+        });
+        northeast = grid.state({
+          x: x + 1,
+          y: y - 1
+        });
+        outcomes = [0, 1, 1, 1, 0, 1, 1, 0];
+        value = parseInt([northwest, north, northeast].join(''), 2);
+        return outcomes[value] || 0;
+      }
     }
   };
 

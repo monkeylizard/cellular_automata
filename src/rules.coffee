@@ -92,3 +92,20 @@
       return HEAD if number_of_active_neighbors == 1 || number_of_active_neighbors == 2
 
       WIRE
+
+  rule_110:
+    name: 'Rule 110'
+    states: 2
+    colors: ['inherit', '#E8107C']
+    rule: (x, y, grid) ->
+      self = grid.state(x: x, y: y)
+      return 1 if self
+
+      northwest = grid.state(x: x - 1,  y: y - 1)
+      north     = grid.state(x: x,      y: y - 1)
+      northeast = grid.state(x: x + 1,  y: y - 1)
+
+      outcomes = [0,1,1,1,0,1,1,0]
+
+      value = parseInt([northwest, north, northeast].join(''), 2)
+      outcomes[value] || 0
