@@ -1,0 +1,3 @@
+#!/bin/bash
+
+coffee --watch --output build --join cellular_automata_spec.js spec/*.coffee &
