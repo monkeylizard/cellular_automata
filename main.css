@@ -21,14 +21,14 @@ body {
 #grid_container table td {
   border: 1px solid #B3B3C9;
 }
-#controls {
+#controls_container {
   position: fixed;
   top: 35px;
   right: 50px;
   width: 100px;
 }
 
-#controls button {
+#controls_container button {
   background-color: #3434B3;
   color: white;
   border: none;
