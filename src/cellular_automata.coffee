@@ -12,45 +12,24 @@ class @CellularAutomata
   start: ({ rule: rule }) ->
     grid = new Grid(@_grid_container(), height: @height, width: @width, interactive: @interactive, states: @rules[rule].states)
     @automaton = new Automaton(grid, @rules[rule].rule, @step_time)
-    @_set_up_controls()
+    @_set_up_control_buttons()
     @_set_up_menu()
     @_set_up_color_rules(@rules[rule].colors)
 
-  _set_up_controls: ->
-    @controls = new ButtonControls(container: @container, automaton: @automaton)
-    @controls.set_up()
+  _set_up_control_buttons: ->
+    @_control_buttons().set_up()
+
+  _control_buttons: ->
+    new ButtonControls(container: @container, automaton: @automaton)
 
   _set_up_menu: ->
-    @_controls_container().append @_menu()
+    @_menu().set_up()
 
-  _menu: -> @_responding_to_changes @_with_rule_options(@_new_menu())
-
-  _new_menu: -> jQuery('<select/>', id: 'menu')
-
-  _responding_to_changes: (menu) ->
-    menu.change => @start(rule: menu.val())
-
-  _with_rule_options: (menu) ->
-    _.each _.keys(@rules), (rule_name) =>
-      menu.append @_menu_item_for(rule_name)
-    menu
-
-  _menu_item_for: (rule_name) ->
-    jQuery('<option/>', value: rule_name, text: @rules[rule_name].name)
+  _menu: ->
+    new MenuControls(container: @container, rules: @rules, start: ((options) => @start(options)))
 
   _grid_container: ->
     @grid_container ||= @_existing_grid_container() || @_new_grid_container()
-
-  _controls_container: ->
-    @controls_container ||= @_existing_controls_container() || @_new_controls_container()
-
-  _existing_controls_container: ->
-    controls_container = @container.find('#controls_container')
-    return unless controls_container.length > 0
-    controls_container
-
-  _new_controls_container: ->
-    jQuery('<div/>', id: 'controls_container').appendTo(@container)
 
   _existing_grid_container: ->
     grid_container = @container.find('#grid_container')

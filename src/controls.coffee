@@ -35,3 +35,24 @@ class @ButtonControls extends Controls
   _capitalize: (text) ->
     text.charAt(0).toUpperCase() + text.slice(1);
 
+class @MenuControls extends Controls
+
+  constructor: ({ container: container, start: @start, rules: @rules}) ->
+    super(container: container)
+
+  set_up: -> @container.append @_menu()
+
+  _menu: -> @_responding_to_changes @_with_rule_options(@_new_menu())
+
+  _new_menu: -> jQuery('<select/>', id: 'menu')
+
+  _responding_to_changes: (menu) ->
+    menu.change => @start(rule: menu.val())
+
+  _with_rule_options: (menu) ->
+    _.each _.keys(@rules), (rule_name) =>
+      menu.append @_menu_item_for(rule_name)
+    menu
+
+  _menu_item_for: (rule_name) ->
+    jQuery('<option/>', value: rule_name, text: @rules[rule_name].name)
