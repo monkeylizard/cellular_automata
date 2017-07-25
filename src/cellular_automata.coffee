@@ -10,34 +10,28 @@ class @CellularAutomata
     @interactive = true unless @interactive?
 
   start: ({ rule: rule }) ->
-    grid = new Grid(@_grid_container(), height: @height, width: @width, interactive: @interactive, states: @rules[rule].states)
-    @automaton = new Automaton(grid, @rules[rule].rule, @step_time)
+    @automaton = @_automaton_for(@rules[rule])
     @_set_up_control_buttons()
     @_set_up_menu()
     @_set_up_color_rules(@rules[rule].colors)
 
+  _automaton_for: (rule) ->
+    new Automaton(@_grid_for(rule), rule.rule, @step_time)
+
+  _grid_for: (rule) ->
+    new Grid(@container, height: @height, width: @width, interactive: @interactive, states: rule.states)
+
   _set_up_control_buttons: ->
     @_control_buttons().set_up()
-
-  _control_buttons: ->
-    new ButtonControls(container: @container, automaton: @automaton)
 
   _set_up_menu: ->
     @_menu().set_up()
 
+  _control_buttons: ->
+    new ButtonControls(container: @container, automaton: @automaton)
+
   _menu: ->
     new MenuControls(container: @container, rules: @rules, start: ((options) => @start(options)))
-
-  _grid_container: ->
-    @grid_container ||= @_existing_grid_container() || @_new_grid_container()
-
-  _existing_grid_container: ->
-    grid_container = @container.find('#grid_container')
-    return unless grid_container.length > 0
-    grid_container
-
-  _new_grid_container: ->
-    jQuery('<div/>', id: 'grid_container').appendTo(@container)
 
   _set_up_color_rules: (colors) ->
     @_clear_existing_color_rules()

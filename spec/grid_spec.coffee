@@ -1,10 +1,11 @@
 describe 'Grid', ->
   
   beforeEach ->
-    @grid_container = jQuery('<div/>')
+    @container = jQuery('<div/>', id: 'container')
+    @grid_container = jQuery('<div/>', id: 'grid_container').appendTo(@container)
 
   it 'creates a grid in the given container', ->
-    grid = new Grid(@grid_container, height: 10, width: 10)
+    grid = new Grid(@container, height: 10, width: 10)
 
     grid_table = @grid_container.children('table')
     expect(grid_table.length).toEqual(1)
@@ -13,8 +14,23 @@ describe 'Grid', ->
     _.each grid_table.children('tr'), (row) ->
       expect(jQuery(row).children('td').length).toEqual(10)
 
+  it 'if no grid container is present in the given container, creates one', ->
+    @container.empty()
+
+    grid = new Grid(@container, height: 10, width: 10)
+
+    grid_container = @container.find('#grid_container')
+    expect(grid_container.length).toEqual(1)
+
+    grid_table = grid_container.children('table')
+    expect(grid_table.length).toEqual(1)
+    expect(grid_table.children('tr').length).toEqual(10)
+
+    _.each grid_table.children('tr'), (row) ->
+      expect(jQuery(row).children('td').length).toEqual(10)
+
   it 'labels each cell in the grid', ->
-    grid = new Grid(@grid_container, height: 10, width: 10)
+    grid = new Grid(@container, height: 10, width: 10)
 
     grid_table = @grid_container.children('table')
 
@@ -26,7 +42,7 @@ describe 'Grid', ->
         expect(cell.attr('data-state')).toEqual('0')
 
   it 'can turn on a given cell', ->
-    grid = new Grid(@grid_container, height: 10, width: 10)
+    grid = new Grid(@container, height: 10, width: 10)
 
     grid_table = @grid_container.children('table')
 
@@ -36,7 +52,7 @@ describe 'Grid', ->
     expect(cell.attr('data-state')).toEqual('1')
 
   it 'can turn off a given cell', ->
-    grid = new Grid(@grid_container, height: 10, width: 10)
+    grid = new Grid(@container, height: 10, width: 10)
 
     grid_table = @grid_container.children('table')
 
@@ -46,7 +62,7 @@ describe 'Grid', ->
     expect(grid_table.find('.row3#cell7').attr('data-state')).toEqual('0')
 
   it 'can toggle a given cell', ->
-    grid = new Grid(@grid_container, height: 10, width: 10)
+    grid = new Grid(@container, height: 10, width: 10)
 
     grid_table = @grid_container.children('table')
 
@@ -59,7 +75,7 @@ describe 'Grid', ->
     expect(grid_table.find('.row8#cell4').attr('data-state')).toEqual('0')
 
   it 'can set a given cell value', ->
-    grid = new Grid(@grid_container, height: 10, width: 10)
+    grid = new Grid(@container, height: 10, width: 10)
 
     grid_table = @grid_container.children('table')
 
@@ -72,7 +88,7 @@ describe 'Grid', ->
     expect(grid_table.find('.row8#cell4').attr('data-state')).toEqual('0')
 
   it 'can be made interactive', ->
-    grid = new Grid(@grid_container, height: 10, width: 10, interactive: true)
+    grid = new Grid(@container, height: 10, width: 10, interactive: true)
 
     grid_table = @grid_container.children('table')
 
@@ -87,7 +103,7 @@ describe 'Grid', ->
     expect(cell.attr('data-state')).toEqual('0')
 
   it 'can tell if a given cell is active', ->
-    grid = new Grid(@grid_container, height: 10, width: 10, interactive: true)
+    grid = new Grid(@container, height: 10, width: 10, interactive: true)
 
     grid_table = @grid_container.children('table')
 
@@ -100,7 +116,7 @@ describe 'Grid', ->
     expect(grid.is_on(x: 4, y: 5)).toEqual(false)
 
   it 'can read the state of a given cell', ->
-    grid = new Grid(@grid_container, height: 10, width: 10, interactive: true)
+    grid = new Grid(@container, height: 10, width: 10, interactive: true)
 
     grid_table = @grid_container.children('table')
 
@@ -113,7 +129,7 @@ describe 'Grid', ->
     expect(grid.state(x: 4, y: 5)).toEqual(0)
 
   it 'can be initialized with a number of possible states and cycle through them', ->
-    grid = new Grid(@grid_container, height: 10, width: 10, states: 3)
+    grid = new Grid(@container, height: 10, width: 10, states: 3)
 
     grid_table = @grid_container.children('table')
 

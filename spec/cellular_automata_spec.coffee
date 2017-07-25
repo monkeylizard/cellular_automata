@@ -29,7 +29,7 @@ describe 'CellularAutomata', ->
 
       cellular_automata.start(rule: 'first_rule')
 
-      expect(Grid).toHaveBeenCalledWith(grid_container, height: 30, width: 50, interactive: true, states: 2)
+      expect(Grid).toHaveBeenCalledWith(@container, height: 30, width: 50, interactive: true, states: 2)
       expect(Automaton).toHaveBeenCalledWith(grid, rules.first_rule.rule, 100)
 
     it 'can specify settings for Grid and an Automaton', ->
@@ -45,17 +45,8 @@ describe 'CellularAutomata', ->
 
       cellular_automata.start(rule: 'first_rule')
 
-      expect(Grid).toHaveBeenCalledWith(grid_container, height: 10, width: 10, interactive: false, states: 2)
+      expect(Grid).toHaveBeenCalledWith(@container, height: 10, width: 10, interactive: false, states: 2)
       expect(Automaton).toHaveBeenCalledWith(grid, rules.first_rule.rule, 50)
-
-    it 'creates a grid container if one does not already exist', ->
-      rules =  first_rule: { states: 2, rule: -> }
-      cellular_automata = new CellularAutomata(container: @container, rules: rules, height: 10, width: 10, interactive: false, step_time: 50)
-
-      cellular_automata.start(rule: 'first_rule')
-
-      grid_container = @container.find('#grid_container')
-      expect(grid_container.length).toEqual(1)
 
   describe 'controls', ->
 

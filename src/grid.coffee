@@ -1,6 +1,7 @@
 class @Grid
 
-  constructor: (@container, { height: @height, width: @width, interactive: interactive, states: @states }) ->
+  constructor: (container, { height: @height, width: @width, interactive: interactive, states: @states }) ->
+    @container = @_grid_container_in(container)
     @states ||= 2
     @_add_grid_to_container()
     @_add_interactivity() if interactive
@@ -19,6 +20,17 @@ class @Grid
 
   set: (coordinates, value) ->
     @_grid_cell(coordinates).attr('data-state', value)
+
+  _grid_container_in: (container) ->
+    @_existing_grid_container_in(container) || @_new_grid_container_in(container)
+
+  _new_grid_container_in: (container) ->
+    jQuery('<div/>', id: 'grid_container').appendTo(container)
+
+  _existing_grid_container_in: (container) ->
+    grid_container = container.find('#grid_container')
+    return unless grid_container.length > 0
+    grid_container
 
   _add_interactivity: ->
     self = @
