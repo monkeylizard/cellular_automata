@@ -13,18 +13,18 @@ class @CellularAutomata
     grid = new Grid(@_grid_container(), height: @height, width: @width, interactive: @interactive, states: @rules[rule].states)
     @automaton = new Automaton(grid, @rules[rule].rule, @step_time)
     @_set_up_controls()
+    @_set_up_menu()
     @_set_up_color_rules(@rules[rule].colors)
 
   _set_up_controls: ->
-    @_controls_container().empty()
-    @_set_up_control_buttons()
-    @_set_up_menu()
+    @controls = new ButtonControls(container: @container, automaton: @automaton)
+    @controls.set_up()
 
   _set_up_menu: ->
     @_controls_container().append @_menu()
 
   _menu: -> @_responding_to_changes @_with_rule_options(@_new_menu())
-  
+
   _new_menu: -> jQuery('<select/>', id: 'menu')
 
   _responding_to_changes: (menu) ->
@@ -37,18 +37,6 @@ class @CellularAutomata
 
   _menu_item_for: (rule_name) ->
     jQuery('<option/>', value: rule_name, text: @rules[rule_name].name)
-
-  _set_up_control_buttons: ->
-    _.each ['start', 'stop', 'step', 'clear'], (option) =>
-      @_controls_container().append(@_control_button_for(option))
-
-  _control_button_for: (option) ->
-    button = jQuery('<button/>', id: option, text: @_capitalize(option))
-    button.on 'click', => @automaton[option]()
-    button
-
-  _capitalize: (text) ->
-    text.charAt(0).toUpperCase() + text.slice(1);
 
   _grid_container: ->
     @grid_container ||= @_existing_grid_container() || @_new_grid_container()
