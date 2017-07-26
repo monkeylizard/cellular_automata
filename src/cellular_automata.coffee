@@ -10,9 +10,10 @@ class @CellularAutomata
     @interactive = true unless @interactive?
 
   start: ({ rule: rule_name }) ->
+    @container.empty()
     @_set_up_automaton_for(rule_name)
     @_set_up_control_buttons()
-    @_set_up_menu()
+    @_set_up_menu(rule_name)
     @_set_up_color_rules_for(rule_name)
 
   _set_up_automaton_for: (rule_name) ->
@@ -21,8 +22,8 @@ class @CellularAutomata
   _set_up_control_buttons: ->
     @_control_buttons().set_up()
 
-  _set_up_menu: ->
-    @_menu().set_up()
+  _set_up_menu: (starting_rule) ->
+    @_menu(starting_rule).set_up()
 
   _set_up_color_rules_for: (rule_name) ->
     @_color_rules_for(@rules[rule_name].colors).set_up()
@@ -30,8 +31,8 @@ class @CellularAutomata
   _control_buttons: ->
     new ButtonControls(container: @container, automaton: @automaton)
 
-  _menu: ->
-    new MenuControls(container: @container, rules: @rules, start: ((options) => @start(options)))
+  _menu: (starting_rule) ->
+    new MenuControls(container: @container, starting_rule: starting_rule, rules: @rules, start: ((options) => @start(options)))
 
   _color_rules_for: (colors) ->
     new ColorRules(container: @container, colors: colors)

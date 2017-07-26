@@ -1,4 +1,4 @@
-@rules =
+@demo_rules =
   conways_game_of_life:
     name: "Conway's Game of Life"
     states: 2

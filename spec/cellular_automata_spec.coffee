@@ -32,6 +32,18 @@ describe 'CellularAutomata', ->
       expect(Grid).toHaveBeenCalledWith(@container, height: 30, width: 50, interactive: true, states: 2)
       expect(Automaton).toHaveBeenCalledWith(grid, rules.first_rule.rule, 100)
 
+    it 'empties the container before starting', ->
+      @container.empty()
+      grid_container = jQuery('<div/>', id: 'grid_container').appendTo(@container)
+      grid_container.append(jQuery('<div/>', id: 'clean_me_up'))
+
+      rules =  first_rule: { states: 2, rule: -> }
+      cellular_automata = new CellularAutomata(container: @container, rules: rules)
+
+      cellular_automata.start(rule: 'first_rule')
+
+      expect(@container.find('#clean_me_up').length).toEqual(0)
+
     it 'can specify settings for Grid and an Automaton', ->
       grid_container = jQuery('<div/>', id: 'grid_container').appendTo(@container)
       spyOn(@container, 'find').and.returnValue(grid_container)
@@ -93,7 +105,7 @@ describe 'CellularAutomata', ->
 
     it 'creates a menu for rule selection', ->
       cellular_automata = new CellularAutomata(container: @container, rules: @rules)
-      cellular_automata.start(rule: 'first_rule')
+      cellular_automata.start(rule: 'second_rule')
 
       controls = @container.find('#controls_container')
       menu = controls.find('select#menu')
@@ -101,6 +113,8 @@ describe 'CellularAutomata', ->
       expect(menu.length).toEqual(1)
       options = menu.find('option')
       expect(options.length).toEqual(2)
+
+      expect(menu.val()).toEqual('second_rule')
 
       expect(jQuery(options[0]).attr('value')).toEqual('first_rule')
       expect(jQuery(options[0]).text()).toEqual('The first rule')

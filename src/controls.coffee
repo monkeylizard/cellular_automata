@@ -37,22 +37,29 @@ class @ButtonControls extends Controls
 
 class @MenuControls extends Controls
 
-  constructor: ({ container: container, start: @start, rules: @rules}) ->
+  constructor: ({ container: container, start: @start, rules: @rules, starting_rule: @starting_rule}) ->
     super(container: container)
 
   set_up: -> @container.append @_menu()
 
-  _menu: -> @_responding_to_changes @_with_rule_options(@_new_menu())
+  _menu: ->
+    @_create_menu()
+    @_add_rule_options()
+    @_set_starting_value()
+    @_respond_to_changes()
+    @menu
 
-  _new_menu: -> jQuery('<select/>', id: 'menu')
+  _create_menu: -> @menu = jQuery('<select/>', id: 'menu')
 
-  _responding_to_changes: (menu) ->
-    menu.change => @start(rule: menu.val())
+  _set_starting_value: ->
+    @menu.val(@starting_rule)
 
-  _with_rule_options: (menu) ->
+  _respond_to_changes: ->
+    @menu.change => @start(rule: @menu.val())
+
+  _add_rule_options: ->
     _.each _.keys(@rules), (rule_name) =>
-      menu.append @_menu_item_for(rule_name)
-    menu
+      @menu.append @_menu_item_for(rule_name)
 
   _menu_item_for: (rule_name) ->
     jQuery('<option/>', value: rule_name, text: @rules[rule_name].name)
