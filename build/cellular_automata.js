@@ -98,7 +98,7 @@
       }
     }
 
-    CellularAutomata.prototype.start = function(arg) {
+    CellularAutomata.prototype.render = function(arg) {
       var rule_name;
       rule_name = arg.rule;
       this.container.empty();
@@ -136,9 +136,9 @@
         container: this.container,
         starting_rule: starting_rule,
         rules: this.rules,
-        start: ((function(_this) {
+        render: ((function(_this) {
           return function(options) {
-            return _this.start(options);
+            return _this.render(options);
           };
         })(this))
       });
@@ -288,7 +288,7 @@
 
     function MenuControls(arg) {
       var container;
-      container = arg.container, this.start = arg.start, this.rules = arg.rules, this.starting_rule = arg.starting_rule;
+      container = arg.container, this.render = arg.render, this.rules = arg.rules, this.starting_rule = arg.starting_rule;
       MenuControls.__super__.constructor.call(this, {
         container: container
       });
@@ -319,7 +319,7 @@
     MenuControls.prototype._respond_to_changes = function() {
       return this.menu.change((function(_this) {
         return function() {
-          return _this.start({
+          return _this.render({
             rule: _this.menu.val()
           });
         };
@@ -460,7 +460,7 @@
       return new CellularAutomata({
         container: jQuery('#container'),
         rules: _this.demo_rules
-      }).start({
+      }).render({
         rule: 'conways_game_of_life'
       });
     };
@@ -473,39 +473,39 @@
       colors: ['inherit', '#E8107C'],
       rule: function(x, y, grid) {
         var east, north, northeast, northwest, number_of_live_neighbors, self, south, southeast, southwest, west;
-        self = grid.is_on({
+        self = grid.state({
           x: x,
           y: y
         });
-        northwest = grid.is_on({
+        northwest = grid.state({
           x: x - 1,
           y: y - 1
         });
-        north = grid.is_on({
+        north = grid.state({
           x: x,
           y: y - 1
         });
-        northeast = grid.is_on({
+        northeast = grid.state({
           x: x + 1,
           y: y - 1
         });
-        west = grid.is_on({
+        west = grid.state({
           x: x - 1,
           y: y
         });
-        east = grid.is_on({
+        east = grid.state({
           x: x + 1,
           y: y
         });
-        southwest = grid.is_on({
+        southwest = grid.state({
           x: x - 1,
           y: y + 1
         });
-        south = grid.is_on({
+        south = grid.state({
           x: x,
           y: y + 1
         });
-        southeast = grid.is_on({
+        southeast = grid.state({
           x: x + 1,
           y: y + 1
         });

@@ -37,7 +37,7 @@ class @ButtonControls extends Controls
 
 class @MenuControls extends Controls
 
-  constructor: ({ container: container, start: @start, rules: @rules, starting_rule: @starting_rule}) ->
+  constructor: ({ container: container, render: @render, rules: @rules, starting_rule: @starting_rule}) ->
     super(container: container)
 
   set_up: -> @container.append @_menu()
@@ -55,7 +55,7 @@ class @MenuControls extends Controls
     @menu.val(@starting_rule)
 
   _respond_to_changes: ->
-    @menu.change => @start(rule: @menu.val())
+    @menu.change => @render(rule: @menu.val())
 
   _add_rule_options: ->
     _.each _.keys(@rules), (rule_name) =>

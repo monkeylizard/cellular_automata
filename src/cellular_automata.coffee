@@ -9,7 +9,7 @@ class @CellularAutomata
     @step_time ||= DEFAULT_STEP_TIME
     @interactive = true unless @interactive?
 
-  start: ({ rule: rule_name }) ->
+  render: ({ rule: rule_name }) ->
     @container.empty()
     @_set_up_automaton_for(rule_name)
     @_set_up_control_buttons()
@@ -32,7 +32,7 @@ class @CellularAutomata
     new ButtonControls(container: @container, automaton: @automaton)
 
   _menu: (starting_rule) ->
-    new MenuControls(container: @container, starting_rule: starting_rule, rules: @rules, start: ((options) => @start(options)))
+    new MenuControls(container: @container, starting_rule: starting_rule, rules: @rules, render: ((options) => @render(options)))
 
   _color_rules_for: (colors) ->
     new ColorRules(container: @container, colors: colors)

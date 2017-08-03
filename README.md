@@ -20,7 +20,7 @@ You can download a pre-built version of the code [here](https://github.com/monke
 
 # Simple Example
 
-To render a cellular automaton, instantiate a `CellularAutomata` instance, and call `start` on it. The constructor of `CellularAutomata` accepts an options object that we will supply with two values: `container`, which is a jQuery-selected `div`, and `rules`, which is an object containing the rules we want to visualize. The `start` method is then called with the key of the rule we want to show first.
+To render a cellular automaton, instantiate a `CellularAutomata` instance, and call `render` on it. The constructor of `CellularAutomata` accepts an options object that we will supply with two values: `container`, which is a jQuery-selected `div`, and `rules`, which is an object containing the rules we want to visualize. The `render` method is then called with the key of the rule we want to show first.
 
 ```javascript
 rules = {
@@ -37,7 +37,7 @@ rules = {
 
 container = jQuery('#container')
 
-new CellularAutomata({ rules: rules, container: container }).start('on_off')
+new CellularAutomata({ rules: rules, container: container }).render('on_off')
 ```
 
 The `CellularAutomata` then creates a grid, control buttons, and a rules menu inside of the given container. In the grid, the cells will change color at each step according to the rule given. The control buttons allow you to start the automaton, stop it, advance it one step, and clear the grid. If we had included more than one rule, the rules menu would allow us to switch between the rules that we had created.
@@ -46,7 +46,7 @@ In this example, we have created an automaton that simply alternates whether a g
 
 # Defining Rules
 
-The `rules` object given to the `CeullularAutomata` constructor takes the form of a nested JavaScript object. Each rule is specified by a key, which is the value passed into `CellularAutomata#start` to specify which rule should be displayed to begin with (in the case of the example above, that would be `"on_off"`). Nested beneath that key, each rule has four properties:
+The `rules` object given to the `CeullularAutomata` constructor takes the form of a nested JavaScript object. Each rule is specified by a key, which is the value passed into `CellularAutomata#render` to specify which rule should be displayed to begin with (in the case of the example above, that would be `"on_off"`). Nested beneath that key, each rule has four properties:
 * `name` - this is the display name of the rule. It is what will be shown in the rule selection menu.
 * `states` - this is the number of allowed states of cells in this rule. Many cellular automata are binary, such as the above example, and Conway's Game of Life, but some allow other numbers of states. For example, my implementation of fire propagation uses 7 states, which specify when a cell is normal (0), blocked (1), burning (2-5), or burned out (6), and Wire World uses four states, indicating whether a cell is background (0), wire (1), electron head (2), or electron tail (3).
 * `colors` - this is an array of the colors that the cell should take on for each state. These values are strings containing any valid css color, including standard color names, hex values, and rgb values. Additionally note that if you want the cell to be the same color as the background, you can specify `"inherit"`, which is the css property that says it should take on the value its parent has.

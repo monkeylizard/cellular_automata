@@ -27,7 +27,7 @@ describe 'CellularAutomata', ->
       spyOn(window, 'Grid').and.returnValue(grid)
       spyOn(window, 'Automaton')
 
-      cellular_automata.start(rule: 'first_rule')
+      cellular_automata.render(rule: 'first_rule')
 
       expect(Grid).toHaveBeenCalledWith(@container, height: 30, width: 50, interactive: true, states: 2)
       expect(Automaton).toHaveBeenCalledWith(grid, rules.first_rule.rule, 100)
@@ -40,7 +40,7 @@ describe 'CellularAutomata', ->
       rules =  first_rule: { states: 2, rule: -> }
       cellular_automata = new CellularAutomata(container: @container, rules: rules)
 
-      cellular_automata.start(rule: 'first_rule')
+      cellular_automata.render(rule: 'first_rule')
 
       expect(@container.find('#clean_me_up').length).toEqual(0)
 
@@ -55,7 +55,7 @@ describe 'CellularAutomata', ->
       spyOn(window, 'Grid').and.returnValue(grid)
       spyOn(window, 'Automaton')
 
-      cellular_automata.start(rule: 'first_rule')
+      cellular_automata.render(rule: 'first_rule')
 
       expect(Grid).toHaveBeenCalledWith(@container, height: 10, width: 10, interactive: false, states: 2)
       expect(Automaton).toHaveBeenCalledWith(grid, rules.first_rule.rule, 50)
@@ -73,7 +73,7 @@ describe 'CellularAutomata', ->
 
       rules =  first_rule: { states: 2, rule: -> }
       cellular_automata = new CellularAutomata(container: @container, rules: rules)
-      cellular_automata.start(rule: 'first_rule')
+      cellular_automata.render(rule: 'first_rule')
 
     it 'creates control buttons', ->
       controls = @container.find('#controls_container')
@@ -98,14 +98,14 @@ describe 'CellularAutomata', ->
 
       rules =  first_rule: { states: 2, rule: -> }
       cellular_automata = new CellularAutomata(container: @container, rules: rules)
-      cellular_automata.start(rule: 'first_rule')
+      cellular_automata.render(rule: 'first_rule')
 
       controls = @container.find('#controls_container')
       expect(controls.length).toEqual(1)
 
     it 'creates a menu for rule selection', ->
       cellular_automata = new CellularAutomata(container: @container, rules: @rules)
-      cellular_automata.start(rule: 'second_rule')
+      cellular_automata.render(rule: 'second_rule')
 
       controls = @container.find('#controls_container')
       menu = controls.find('select#menu')
@@ -125,17 +125,17 @@ describe 'CellularAutomata', ->
 
     it 'selecting a menu item starts that rule', ->
       cellular_automata = new CellularAutomata(container: @container, rules: @rules)
-      cellular_automata.start(rule: 'first_rule')
+      cellular_automata.render(rule: 'first_rule')
 
       controls = @container.find('#controls_container')
       menu = controls.find('select#menu')
 
-      spyOn(cellular_automata, 'start')
+      spyOn(cellular_automata, 'render')
 
       menu.val('second_rule')
       menu.trigger('change')
 
-      expect(cellular_automata.start).toHaveBeenCalledWith(rule: 'second_rule')
+      expect(cellular_automata.render).toHaveBeenCalledWith(rule: 'second_rule')
 
     it 'start button starts the automaton', ->
       @container.find('#controls_container #start').click()
@@ -168,7 +168,7 @@ describe 'CellularAutomata', ->
 
         rules =  first_rule: { states: 2, rule: -> }
         cellular_automata = new CellularAutomata(container: @container, rules: rules)
-        cellular_automata.start(rule: 'first_rule')
+        cellular_automata.render(rule: 'first_rule')
 
       it 'on the start button', ->
         @container.find('#controls_container #start').click()
@@ -205,7 +205,7 @@ describe 'CellularAutomata', ->
 
     it 'creates css for the color rules for each state given', ->
       cellular_automata = new CellularAutomata(container: @container, rules: @rules)
-      cellular_automata.start(rule: 'first_rule')
+      cellular_automata.render(rule: 'first_rule')
 
       styles = @container.find('style')
       expect(styles.length).toEqual(2)
@@ -217,10 +217,11 @@ describe 'CellularAutomata', ->
       @container.append jQuery('<style>.foo { background-color: black }</style>')
 
       cellular_automata = new CellularAutomata(container: @container, rules: @rules)
-      cellular_automata.start(rule: 'first_rule')
+      cellular_automata.render(rule: 'first_rule')
 
       styles = @container.find('style')
       expect(styles.length).toEqual(2)
+
 
       expect(jQuery(styles[0]).html()).toEqual("[data-state='0'] { background-color: black; }")
       expect(jQuery(styles[1]).html()).toEqual("[data-state='1'] { background-color: white; }")
