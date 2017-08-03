@@ -4,17 +4,17 @@
     states: 2
     colors: ['inherit', '#E8107C']
     rule: (x, y, grid) ->
-      self      = grid.is_on(x: x, y: y)
-      northwest = grid.is_on(x: x - 1,  y: y - 1)
-      north     = grid.is_on(x: x,      y: y - 1)
-      northeast = grid.is_on(x: x + 1,  y: y - 1)
+      self      = grid.state(x: x, y: y)
+      northwest = grid.state(x: x - 1,  y: y - 1)
+      north     = grid.state(x: x,      y: y - 1)
+      northeast = grid.state(x: x + 1,  y: y - 1)
 
-      west      = grid.is_on(x: x - 1,  y: y)
-      east      = grid.is_on(x: x + 1,  y: y)
+      west      = grid.state(x: x - 1,  y: y)
+      east      = grid.state(x: x + 1,  y: y)
 
-      southwest = grid.is_on(x: x - 1,  y: y + 1)
-      south     = grid.is_on(x: x,      y: y + 1)
-      southeast = grid.is_on(x: x + 1,  y: y + 1)
+      southwest = grid.state(x: x - 1,  y: y + 1)
+      south     = grid.state(x: x,      y: y + 1)
+      southeast = grid.state(x: x + 1,  y: y + 1)
 
       number_of_live_neighbors = _.compact([northwest, north, northeast, west, east, southwest, south, southeast]).length
 

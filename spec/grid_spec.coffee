@@ -102,19 +102,6 @@ describe 'Grid', ->
 
     expect(cell.attr('data-state')).toEqual('0')
 
-  it 'can tell if a given cell is active', ->
-    grid = new Grid(@container, height: 10, width: 10, interactive: true)
-
-    grid_table = @grid_container.children('table')
-
-    grid.turn_on(x: 4, y: 5)
-
-    expect(grid.is_on(x: 4, y: 5)).toEqual(true)
-
-    grid.turn_off(x: 4, y: 5)
-
-    expect(grid.is_on(x: 4, y: 5)).toEqual(false)
-
   it 'can read the state of a given cell', ->
     grid = new Grid(@container, height: 10, width: 10, interactive: true)
 

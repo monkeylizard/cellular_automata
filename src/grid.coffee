@@ -16,8 +16,6 @@ class @Grid
   state: (coordinates) ->
     Number(@_grid_cell(coordinates).attr('data-state'))
 
-  is_on: (coordinates) -> @state(coordinates) > 0
-
   set: (coordinates, value) ->
     @_grid_cell(coordinates).attr('data-state', value)
 

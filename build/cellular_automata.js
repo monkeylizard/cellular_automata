@@ -373,10 +373,6 @@
       return Number(this._grid_cell(coordinates).attr('data-state'));
     };
 
-    Grid.prototype.is_on = function(coordinates) {
-      return this.state(coordinates) > 0;
-    };
-
     Grid.prototype.set = function(coordinates, value) {
       return this._grid_cell(coordinates).attr('data-state', value);
     };

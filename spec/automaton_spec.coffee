@@ -23,7 +23,7 @@ describe 'Automaton', ->
     rule = (x, y, grid) ->
       return true if x == y == 0
       return false if y > 0
-      return true unless grid.is_on(x: x - 1, y: y)
+      return true unless grid.state(x: x - 1, y: y)
 
     automaton = new Automaton(@grid, rule)
 
@@ -37,7 +37,7 @@ describe 'Automaton', ->
   it 'can make moves at regular intervals', ->
     jasmine.clock().install()
 
-    rule = (x, y, grid) -> !grid.is_on(x: x, y: y)
+    rule = (x, y, grid) -> !grid.state(x: x, y: y)
 
     automaton = new Automaton(@grid, rule, 1000)
 
