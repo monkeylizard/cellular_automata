@@ -29,7 +29,7 @@ rules = {
     states: 2,
     colors: ['black', 'white'],
     rule: function(x, y, grid) {
-      current_value = grid.is_on({ x: x, y: y })
+      current_value = grid.state({ x: x, y: y })
       return !current_value
     }
   }
@@ -54,7 +54,7 @@ The `rules` object given to the `CeullularAutomata` constructor takes the form o
 
 # Configuring `CellularAutomata`
 
-The `CellularAutomata` object is highly configurable. When constructing it, only the `rules` and `container` parameters are required, but many more options can be specified. A complete list of the allowed options that can be specified is as follows:
+The `CellularAutomata` object is highly configurable. When constructing it, only the `rules` and `container` arguments are required, but many more options can be specified. A complete list of the allowed options that can be specified is as follows:
 * `rules` - the rules you wish to visualize. This argument is required.
 * `container` - the container in which to render the grid and controls. This argument is required.
 * `height` - the height of the grid, in cells. The default height is 30.
@@ -73,17 +73,17 @@ rules =
     states: 2
     colors: ['inherit', '#E8107C']
     rule: (x, y, grid) ->
-      self      = grid.is_on(x: x, y: y)
-      northwest = grid.is_on(x: x - 1,  y: y - 1)
-      north     = grid.is_on(x: x,      y: y - 1)
-      northeast = grid.is_on(x: x + 1,  y: y - 1)
+      self      = grid.state(x: x, y: y)
+      northwest = grid.state(x: x - 1,  y: y - 1)
+      north     = grid.state(x: x,      y: y - 1)
+      northeast = grid.state(x: x + 1,  y: y - 1)
 
-      west      = grid.is_on(x: x - 1,  y: y)
-      east      = grid.is_on(x: x + 1,  y: y)
+      west      = grid.state(x: x - 1,  y: y)
+      east      = grid.state(x: x + 1,  y: y)
 
-      southwest = grid.is_on(x: x - 1,  y: y + 1)
-      south     = grid.is_on(x: x,      y: y + 1)
-      southeast = grid.is_on(x: x + 1,  y: y + 1)
+      southwest = grid.state(x: x - 1,  y: y + 1)
+      south     = grid.state(x: x,      y: y + 1)
+      southeast = grid.state(x: x + 1,  y: y + 1)
 
       number_of_live_neighbors = _.compact([northwest, north, northeast, west, east, southwest, south, southeast]).length
 
